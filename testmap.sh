@@ -6,11 +6,6 @@
 ###allport scan; grep script if open write to OPEN file; if filtered write to FILTERED file
 ###Perform service scans on open; write port / service / service version and output
 ###Perform filterscans to find open port through sourcedns
-#	-send all filtered ports through filtered scan
-#	-ammend list to openports and filteredports via opencheck function
-#	-send filteredports list through ack scans to determine if active;
-#		.if flag is R, active, maybe behind firewall; write to file, cat to terminal with dedicated header
-#		.if flag is RA, rstack response suggests port is CLOSED
 
 
 
@@ -193,61 +188,3 @@ port=$filteredports ; [[ -n $port ]] && filteredscan
 
 
 echo ; rm filteredports openports activeports autoscan sUV 2> /dev/null ; exit
-
-
-
-###EVERYTHING BELOW THIS POINT ARE IDEAS I'VE WRITTEN IN ORDER TO IMPLAMENT IN THE FUTURE
-
-
-
-#-sU responce from ICMP of (type=3/code=3) means UDP port is CLOSED
-
-
-
-#sT does NOT work with source port
-#xsltproc Scan.xml -o Scan.html
-
-#if multiple hosts, and more than 1 are up, compare IPs to find network address 
-#	-try option	-S using matching network IP with host octet that my be within subnet
-#option:	-v will show 'Discovered open port ' followed by 'number/tcp or udp on IP'
-#Option	-A scan should show host name that appears on a line that looks like below
-#	Service Info: Host: NIX-NMAP-DEFAULT
-
-#xsltproc target.xml -o target.html 
-#us greppable file instead of touching???
-
-
-#$ICMP = $'\0'
-#$unreachable = $'\0'
-#       	[[ ! $ICMP =~ ^[I][C][M][P]$ ]]
- #      	&& echo "No match to ICMP"
-
-#if ICMP and (type=3/code=3) <----this is correct syntax and host UP and scan time < t and state is filtered and reason no response 
-#then
-#	echo "Good chance firewall is protecting this port NOTE FOR LATER!!!!"
-
-#	-A with -v	will give more verbose out put inlcuding DNS resolution Name if found
-
-#[[ ! $unreachable =~ ^[u][n][r][e][a][c][h][a][b][l][e]$ ]] && echo "No match to unreachable"
-#!/bin/bash
-
-#        E. NFS(NETWORK FILE SYSTEM
-#                1.) Primarily used with Linux/Unix
-#                2.) Enumerate with nmap:
-#                        -       sudo nmap -sV -sC -p ports IP
-#                        -       sudo nmap -sV --script nfs* IP -p ports
-
-#    6. Consider following scripts:
-#                        -SMB_BF.sh      location: EnumScripts in Mainbox
-#                        -samrdump.py    location: /usr/share/doc/python3-impacket/examples/samrdump.py in Mainbox
-#                7. Other Enumeration Tools for SMB
-#                        -smbmap
-#                                .syntax:        smbmap -u Username -p PASSWORD -H [IP]
-#                                .syntax:        smbmap -u guest -H [IP]
-#                        -CrackMapExec
-#                                .syntax         crackmapexec smb [IP]
-#                        -enum4linux-ng
-#
-#IMAP and IPOP ports suseptible to sV and sC; may give information such as capabilities and domain name with email
-#
-#
