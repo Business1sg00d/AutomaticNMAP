@@ -9,3 +9,4 @@ The issue resides within the functions 'scanprogress' and 'scanprogressVersion'.
 I recieve an error 'Segmentation Fault' on the line of code where the function is created.
 This occurs anytime I run the script where the while loop condition within the 
 function becomes false. At least that's what it looks like to me.
+I believe this has something to do with the older version 7.92; newer is 7.93
