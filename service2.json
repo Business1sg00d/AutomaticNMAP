@@ -1,0 +1,11 @@
+{
+"ID":"x13",
+"name":"x13",
+"Address":"127.0.0.1",
+"Port": 80,
+"check": {
+"Args":["/usr/bin/bash","/tmp/serviceregister.sh"],
+"interval":"10s",
+"Timeout":"360s"
+}
+}
