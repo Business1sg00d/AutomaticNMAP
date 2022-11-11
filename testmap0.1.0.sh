@@ -28,7 +28,7 @@ txtwhite="\e[0;37"
 
 
 #using sudo in order to use subsequent scans under root privileges
-sudo clear ; echo "Are you connected to openvpn?" ; read openvpn ; [[ $openvpn = no ]] && exit
+sudo clear
 echo "Enter IP" ; read ip ; clear
 
 
