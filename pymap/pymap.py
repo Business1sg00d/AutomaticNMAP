@@ -21,8 +21,8 @@ args = parser.parse_args()
 #works with filteredFuntion to return unfilteredports ---> recieved RST flag
 #prints ports found
 #works with dns functions to return any open ports
-def findport(scandata):             
-    info = str(scandata)            
+def findport(scandata):
+    info = str(scandata)
     infospace = info.split('\\n')
     prts = []
     del prts[:]
@@ -36,11 +36,11 @@ def findport(scandata):
             print(line)
             newline = line.split('/')
             openport = re.findall(r'\d+', str(newline))
-            prts.append(openport)
+            prts.append(openport[0])
         elif starts.isdigit() == True and len(unfilteredonly) != 0:
             newline = line.split('/')
             unfilteredport = re.findall(r'\d+', str(newline))
-            prts.append(unfilteredport)
+            prts.append(unfilteredport[0])
     return prts
 
 
@@ -63,7 +63,7 @@ def findfiltered(allscan):
         if starts.isdigit() == True and len(filteredonly) != 0:
             newline = line.split('/')
             filteredport = re.findall(r'\d+', str(newline))
-            filteredports.append(filteredonly)
+            filteredports.append(filteredonly[0])
     return filteredports
 
 
@@ -139,7 +139,7 @@ def initialscan():
     print(Fore.RED + '##########' + Fore.GREEN + 'Beginning default Script scan on ALL ports!' \
     + Fore.RED + '##########')
     allscan = subprocess.run(f'''
-    sudo nmap -sC -n -Pn --disable-arp-ping --min-rate 100 --stats-every 1s {args.ip} >> allportscan''', \
+    sudo nmap -sC -n -Pn --disable-arp-ping --min-rate 100 --stats-every 1s -p- {args.ip}''', \
     shell = True, capture_output = True)
     return allscan
 
@@ -149,7 +149,7 @@ def versionscan(op):
     print(Fore.RED + '##########' + Fore.GREEN + 'Beginning version scan on all OPEN ports!' \
     + Fore.RED + '##########')
     sVscan = subprocess.run(f'''
-    sudo nmap -sV --version-intensity 9 -Pn -n {args.ip} -p {op} --reason --stats-every 1s 2> /dev/null\
+    sudo nmap -sV --version-intensity 9 -Pn -n {args.ip} -p {op} --reason --stats-every 1s 2> /dev/null
     ''', \
     shell = True, capture_output = True)
     findport(sVscan)
@@ -160,9 +160,8 @@ def filteredscan(filteredports):
     unfilteredarray = []
     filteredarray = []
     unfilteredports = subprocess.run(f'''
-    sudo nmap -sA -Pn -n --disable-arp-ping {filteredports} {args.ip}''',\
+    sudo nmap -sA -Pn -n --disable-arp-ping {filteredports} {args.ip}''', \
     shell = True, capture_output = True)
-
     unfiltered = findport(unfilteredports)
     if len(unfiltered) != 0:
         for element in unfiltered:
@@ -175,17 +174,19 @@ def filteredscan(filteredports):
 
 def source53scan(unfilteredports):
     print(Fore.RED + '##########' + Fore.GREEN + 'Sourcing port 53 against filtered ports' \
-    Fore.RED + '##########')
+    + Fore.RED + '##########')
     s53 = subprocess.run(f'''
     sudo nmap -sS -Pn -n --disable-arp-ping {unfilteredports} {args.ip} -g 53''', \
     shell = True, capture_output = True)
+    #need to print s53. findport? If empty array is returned, pring 'No open ports found with source port 53'
 
 
-
-#If findport return len = 0 aka empty, then?
 def main():
     allscan = initialscan()         #Scans ALL ports.
     p = findport(allscan)           #Returns any open ports
+    if len(p) == 0:
+        print(Fore.GREEN + 'No ports found or all filtered')
+        exit(0)
     op = ','.join(p)
     versionscan(op)                 #Version scans all open ports
     fp = findfiltered(allscan)      #Searches for filtered ports from all port scan
