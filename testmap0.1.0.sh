@@ -100,7 +100,7 @@ function scanprogress() {
 	trap "kill $pid 2> /dev/null" EXIT
 	while kill -0 $pid 2> /dev/null ; do percent=$(tail -n 1 allportscan | grep -w About | cut -d':' -f2 | cut -d' ' -f3)\
 	; printf "\r%s" "$percent" ; sleep 1 ; done
-	[[ $? = 0 ]] && echo -en "\033[2k" && printf "\r%s" "100%"
+	[[ $? = 0 ]] && echo -en "\033[2k" && printf "\r%s" "100%  "
 	trap - EXIT
 }
 
@@ -111,7 +111,7 @@ function scanprogressVersion() {
 	trap "kill $pid 2> /dev/null" EXIT
 	while kill -0 $pid 2> /dev/null ; do percent=$(tail -n 1 nmapScan_sV_openports | grep -w About | cut -d':' -f2 | cut -d' ' -f3)\
 	; printf "\r%s" "$percent" ; sleep 1 ; done
-	[[ $? = 0 ]] && echo -en "\033[2k" && printf "\r%s" "100%"
+	[[ $? = 0 ]] && echo -en "\033[2k" && printf "\r%s" "100%  "
 	trap - EXIT
 }
 
