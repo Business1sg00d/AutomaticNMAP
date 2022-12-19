@@ -7,3 +7,9 @@ pymap does NOT use the default script option as I found it difficult to parse th
 I made this as a process to learn firewall rule sets mentioned at https://nmap.org/book/determining-firewall-rules.html.
 
 Works with python3.10.8. Using native libraries. I think you might have to pip install colorama. 
+
+
+PS
+
+subpnmap is just something I use to poke at public facing services on bug bounties/CTFs; saves time as apposed to manually typing out what can be a 
+long nmap command.
