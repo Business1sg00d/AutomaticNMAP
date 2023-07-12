@@ -126,7 +126,8 @@ function beginvuln() {
 
 echo 
 echo -e "${txtred}~~~~~~~~~~Beginning default Script scan on ALL ports!~~~~~~~~~~${txtrst}"
-sudo nmap -sC -n -Pn --disable-arp-ping --min-rate 100 --stats-every 1s -p- $ip 2> /dev/null >> allportscan & scanprogress && echo\
+sudo nmap -sC -n -Pn --disable-arp-ping --min-rate 100 --stats-every 1s -p- $ip \
+-oA $ip"_nmap_script" --max-retries 1 2> /dev/null >> allportscan & scanprogress && echo\
 && cat allportscan | grep -w PORT -A 100
 filteredports=$(cat allportscan | grep -w "filtered" | grep ^[0-9] | cut -d'/' -f1 | tr '\n' ',' | sed s/,$//)
 
